@@ -1,67 +1,84 @@
+var mongoose = require('mongoose'); //traz a instância do mongoose que já está em memória, implementada em database.js e já com a conexão
 
 var api = {};
-
-var contador = 2;
-
-var fotos = [
-	{_id: 1, titulo: 'Leão', url:'http://www.fundosanimais.com/Minis/leoes.jpg' },
-	{_id: 2, titulo: 'Leão 2', url:'http://www.fundosanimais.com/Minis/leoes.jpg' }
-	];
+var model = mongoose.model('Foto');
 
 api.lista = function(req, res){
-	console.log("Tentando obter as fotos?");
-	
-	res.json(fotos);
+	/*model.find(function(error, fotos){
+		if(error){
+			res.status(500).json(error);
+		} 
+		res.json(fotos);
+	});*/
+
+
+	model
+		.find({})
+		.then(function(fotos){
+			res.json(fotos);
+		},
+		function(error){
+			res.status(500).json(error);
+		});
+
 }
 
 
 api.buscaPorId = function(req, res){
-
-	// express mapeia o parâmetro, obtendo com o mesmo nome do parâmetro da url
 	var id = req.params.idFoto;
-
-	var foto = fotos.find(function(foto){
-		if(foto._id == id){
-			return true;
-		}
-	});
-	
-	res.json(foto);
+	model
+		.findById(id)
+		.then(function(foto){
+			console.log(foto);
+			if(!foto) throw Error('Foto não encontrada');
+			res.json(foto);
+		},
+		function(error){
+			console.log(error);
+			res.status(404).json(error);
+		});
 }
 
 
 api.removePorId = function(req, res){
-
-	// express mapeia o parâmetro, obtendo com o mesmo nome do parâmetro da url
 	var id = req.params.idFoto;
-
-	fotos = fotos.filter(function(foto){
-		return foto._id != id; 
-	});
-
-	res.sendStatus(204);
-	//mesma coisa que res.status(204).end();
+	model.remove({_id:id})
+		.then(function(){
+			res.sendStatus(204);
+		},
+		function(error){
+			console.log(error);
+			res.status(500).json(error);
+		});
 }
 
 
 api.adiciona = function(req, res){
-	var foto = req.body;
-	foto._id = ++contador;
-	fotos.push(foto)
 
-	res.json(foto);
+	var fotoRequest = req.body;
+	// O Mongoose sempre usa o plural do meu model como padrão de Collection
+	model.create(fotoRequest)
+		.then(function(foto){
+			res.json(foto);
+		},
+		function(error){
+			console.log(error);
+			res.status(500).json(error);
+		});
 }
 
 api.atualiza = function(req, res){
 	var id = req.params.idFoto;
-	var foto = req.body;
-	var indice = fotos.findIndex(function(foto){
-		return foto._id==id;
-	});
+	var fotoRequest = req.body;
 
-	console.log(foto);
-	fotos[indice] = foto;
-	res.sendStatus(200);
+	model.findByIdAndUpdate(id, fotoRequest)
+		.then(function(foto){
+			res.json(foto);
+		},
+		function(error){
+			console.log(error);
+			res.status(500).json(error);
+		});
 }
 
 

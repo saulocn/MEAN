@@ -45,7 +45,8 @@ app.use(bodyParser.json());
 
 
 consign({cwd:'app'}) //current work directory - diretório padrão do consign
-	.include('api') 
+	.include('models')
+	.then('api') 
 	.then('routes')
 	.into(app);
 
