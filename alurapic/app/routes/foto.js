@@ -11,7 +11,8 @@ module.exports = function(app){
 
 	app.route('/v1/fotos/:idFoto')
 		.get(fotoApi.buscaPorId)
-		.delete(fotoApi.removePorId);
+		.delete(fotoApi.removePorId)
+		.put(fotoApi.atualiza);
 	//app.get('/v1/fotos/:idFoto', fotoApi.buscaPorId);
 	//app.delete('/v1/fotos/:idFoto', fotoApi.removePorId);
 
