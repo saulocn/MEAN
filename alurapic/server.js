@@ -1,5 +1,9 @@
 var http = require('http');
 var app = require('./config/express');
+var url = 'localhost'
+var nomeDoBanco = 'alurapic';
+require('./config/database')(url, nomeDoBanco);
+
 
 
 var port = 3000;
