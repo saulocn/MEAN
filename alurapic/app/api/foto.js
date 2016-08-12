@@ -1,6 +1,8 @@
 
 var api = {};
 
+var contador = 2;
+
 var fotos = [
 	{_id: 1, titulo: 'Leão', url:'http://www.fundosanimais.com/Minis/leoes.jpg' },
 	{_id: 2, titulo: 'Leão 2', url:'http://www.fundosanimais.com/Minis/leoes.jpg' }
@@ -41,5 +43,13 @@ api.removePorId = function(req, res){
 	//mesma coisa que res.status(204).end();
 }
 
+
+api.adiciona = function(req, res){
+	var foto = req.body;
+	foto._id = ++contador;
+	fotos.push(foto)
+
+	res.json(foto);
+}
 
 module.exports = api;

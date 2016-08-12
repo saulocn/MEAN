@@ -1,10 +1,13 @@
 var express = require('express');
-var app = express();
 var consign = require('consign');
+var bodyParser = require('body-parser');
+var app = express();
 
 
 //Configurações do express
 app.use(express.static('./public'));//a partir da raíz do projeto
+// Ativando o middleware body parser
+app.use(bodyParser.json());
 
 //app.get('/v1/fotos', function(req, res){
 //	console.log("Tentando obter as fotos?");
@@ -38,6 +41,8 @@ app.use(express.static('./public'));//a partir da raíz do projeto
 	.include('app/api') 
 	.then('app/routes')
 	.into(app);*/
+
+
 
 consign({cwd:'app'}) //current work directory - diretório padrão do consign
 	.include('api') 

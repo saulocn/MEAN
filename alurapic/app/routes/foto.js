@@ -3,7 +3,10 @@
 module.exports = function(app){
 	//app.get('/v1/fotos', api.lista);
 	var fotoApi = app.api.foto;
-	app.get('/v1/fotos', fotoApi.lista);
+	//app.get('/v1/fotos', fotoApi.lista);
+	app.route('/v1/fotos')
+		.get(fotoApi.lista)
+		.post(fotoApi.adiciona);
 
 
 	app.route('/v1/fotos/:idFoto')
