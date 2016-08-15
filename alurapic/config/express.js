@@ -3,6 +3,8 @@ var consign = require('consign');
 var bodyParser = require('body-parser');
 var app = express();
 
+app.set('secret', 'frasequalquerqueiracriptografartoken');
+
 
 //Configurações do express
 app.use(express.static('./public'));//a partir da raíz do projeto
@@ -47,6 +49,7 @@ app.use(bodyParser.json());
 consign({cwd:'app'}) //current work directory - diretório padrão do consign
 	.include('models')
 	.then('api') 
+	.then('routes/auth.js')
 	.then('routes')
 	.into(app);
 

@@ -71,7 +71,8 @@ api.atualiza = function(req, res){
 	var id = req.params.idFoto;
 	var fotoRequest = req.body;
 
-	model.findByIdAndUpdate(id, fotoRequest)
+	model
+	.findByIdAndUpdate(id, fotoRequest)
 		.then(function(foto){
 			res.json(foto);
 		},
